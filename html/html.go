@@ -6,7 +6,7 @@ import (
 )
 
 type _ElementBuilder interface {
-	AsHtml() string
+	String() string
 }
 
 type _Element struct {
@@ -44,8 +44,8 @@ func (this *_Element) Id(n string) *_Element {
 	return this
 }
 
-func (this *_Element) Text(n string) *_Element {
-	this.text = n
+func (this *_Element) Text(n string, args ...interface{}) *_Element {
+	this.text = fmt.Sprintf(n, args...)
 	return this
 }
 
@@ -108,7 +108,7 @@ func (this *_Element) Type(val string) *_Element {
 	return this
 }
 
-func (this *_Element) AsHtml() string {
+func (this *_Element) String() string {
 	return this.elementAsHtlm(this)	
 }
 
@@ -159,8 +159,8 @@ func (this *_Element) elementAsHtlm(child *_Element) string{
 	for _, v := range child.childs {
 
 		if builder, ok := v.(_ElementBuilder); ok {
-			fmt.Fprintf(&b, "\n\t%v", builder.AsHtml())	
-		}
+			fmt.Fprintf(&b, "\n\t%v", builder.String())	
+		} 
 	}
 
 	fmt.Fprintf(&b, "\n</%v>", child.element)	 	
