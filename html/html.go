@@ -405,6 +405,16 @@ func (this *_A) Href(src string) *_A {
 	return this
 }
 
+type _P struct {
+	_Element
+}
+
+func P() *_P{
+	v := new(_P)
+	v._init("P")
+	return v
+}
+
 type _Button struct {
 	_Element
 }
