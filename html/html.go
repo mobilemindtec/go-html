@@ -411,7 +411,7 @@ type _P struct {
 
 func P() *_P{
 	v := new(_P)
-	v._init("P")
+	v._init("p")
 	return v
 }
 
