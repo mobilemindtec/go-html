@@ -93,13 +93,13 @@ func (this *_Element) Child(vs ...interface{}) *_Element {
 	return this
 }
 
-func (this *_Element) Attr(n string, v string) *_Element {
-	this.attributes[n] = v
+func (this *_Element) Attr(n string, v string, args ...interface{}) *_Element {
+	this.attributes[n] = fmt.Sprintf(v, args...)
 	return this
 }
 
-func (this *_Element) Val(val string) *_Element {
-	this.attributes["value"] = val
+func (this *_Element) Val(n string, args ...interface{}) *_Element {
+	this.attributes["value"] = fmt.Sprintf(n, args...)
 	return this
 }
 
@@ -238,8 +238,8 @@ func (this *_Link) Rel(v string) *_Link{
 	return this
 }
 
-func (this *_Link) Href(v string) *_Link{
-	this.attributes["href"] = v
+func (this *_Link) Href(n string, args ...interface{}) *_Link{
+	this.attributes["href"] = fmt.Sprintf(n, args...)
 	return this
 }
 
@@ -400,8 +400,8 @@ func A() *_A{
 	return v
 }
 
-func (this *_A) Href(src string) *_A {
-	this.attributes["href"] = src
+func (this *_A) Href(src string, args ...interface{}) *_A {
+	this.attributes["href"] = fmt.Sprintf(src, args...)
 	return this
 }
 
