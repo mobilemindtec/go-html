@@ -1,8 +1,8 @@
 package html
 
 import (
-	"strings"
 	"fmt"
+	"strings"
 )
 
 type _ElementBuilder interface {
@@ -10,14 +10,14 @@ type _ElementBuilder interface {
 }
 
 type _Element struct {
-	id string
-	name string
-	text string
-	element string
+	id         string
+	name       string
+	text       string
+	element    string
 	attributes map[string]string
-	styles map[string]string
-	classes []string
-	childs []interface{}
+	styles     map[string]string
+	classes    []string
+	childs     []interface{}
 }
 
 func (this *_Element) _init(el string) {
@@ -58,12 +58,11 @@ func (this *_Element) Styles(n string) *_Element {
 			vss := strings.Split(v, ":")
 
 			if len(vss) == 2 && len(strings.TrimSpace(vss[0])) > 0 && len(strings.TrimSpace(vss[1])) > 0 {
-				this.styles[vss[0]] = vss[1] 
+				this.styles[vss[0]] = vss[1]
 			}
 		}
 	}
 
-	
 	return this
 }
 
@@ -72,13 +71,12 @@ func (this *_Element) Style(k string, v string) *_Element {
 	return this
 }
 
-
 func (this *_Element) Class(n string) *_Element {
 
 	vs := strings.Split(n, " ")
 
 	for _, v := range vs {
-		if len(strings.TrimSpace(v)) > 0  {
+		if len(strings.TrimSpace(v)) > 0 {
 			this.classes = append(this.classes, v)
 		}
 	}
@@ -109,46 +107,44 @@ func (this *_Element) Type(val string) *_Element {
 }
 
 func (this *_Element) String() string {
-	return this.elementAsHtlm(this)	
+	return this.elementAsHtlm(this)
 }
 
-func (this *_Element) elementAsHtlm(child *_Element) string{
+func (this *_Element) elementAsHtlm(child *_Element) string {
 
 	var b strings.Builder
 
-  fmt.Fprintf(&b, "<%v", child.element)
+	fmt.Fprintf(&b, "<%v", child.element)
 
-  if len(strings.TrimSpace(this.id)) > 0{
-  	fmt.Fprintf(&b, " id='%v'", this.id)
-  }
-
-  if len(strings.TrimSpace(this.name)) > 0 {
-  	fmt.Fprintf(&b, " name='%v'", this.name)
-  }
-
-  if len(child.classes) > 0 {
-  	fmt.Fprintf(&b, " class='")
-	  for _, v := range child.classes {
-			fmt.Fprintf(&b, "%v ", v)	  	
-	  } 
-	  
-	  fmt.Fprintf(&b, "'")
+	if len(strings.TrimSpace(this.id)) > 0 {
+		fmt.Fprintf(&b, " id='%v'", this.id)
 	}
 
+	if len(strings.TrimSpace(this.name)) > 0 {
+		fmt.Fprintf(&b, " name='%v'", this.name)
+	}
 
-  if len(child.styles) > 0 { 
-  	fmt.Fprintf(&b, " style='")
-	  for k, v := range child.styles {
-			fmt.Fprintf(&b, "%v:%v;", k, v)	  	
-	  } 
+	if len(child.classes) > 0 {
+		fmt.Fprintf(&b, " class='")
+		for _, v := range child.classes {
+			fmt.Fprintf(&b, "%v ", v)
+		}
 
-	  fmt.Fprintf(&b, "'")
-  }
+		fmt.Fprintf(&b, "'")
+	}
 
+	if len(child.styles) > 0 {
+		fmt.Fprintf(&b, " style='")
+		for k, v := range child.styles {
+			fmt.Fprintf(&b, "%v:%v;", k, v)
+		}
 
-  for k, v := range child.attributes {
-		fmt.Fprintf(&b, " %v='%v'", k, v)	  	
-  } 
+		fmt.Fprintf(&b, "'")
+	}
+
+	for k, v := range child.attributes {
+		fmt.Fprintf(&b, " %v='%v'", k, v)
+	}
 
 	fmt.Fprintf(&b, ">")
 
@@ -159,11 +155,11 @@ func (this *_Element) elementAsHtlm(child *_Element) string{
 	for _, v := range child.childs {
 
 		if builder, ok := v.(_ElementBuilder); ok {
-			fmt.Fprintf(&b, "\n\t%v", builder.String())	
-		} 
+			fmt.Fprintf(&b, "\n\t%v", builder.String())
+		}
 	}
 
-	fmt.Fprintf(&b, "\n</%v>", child.element)	 	
+	fmt.Fprintf(&b, "\n</%v>", child.element)
 
 	return b.String()
 }
@@ -172,7 +168,7 @@ type _Html struct {
 	_Element
 }
 
-func Html() *_Html{
+func Html() *_Html {
 	v := new(_Html)
 	v._init("html")
 	return v
@@ -182,7 +178,7 @@ type _Head struct {
 	_Element
 }
 
-func Head() *_Html{
+func Head() *_Html {
 	v := new(_Html)
 	v._init("head")
 	return v
@@ -192,7 +188,7 @@ type _Body struct {
 	_Element
 }
 
-func Body() *_Body{
+func Body() *_Body {
 	v := new(_Body)
 	v._init("body")
 	return v
@@ -202,23 +198,23 @@ type _Script struct {
 	_Element
 }
 
-func Script() *_Body{
+func Script() *_Body {
 	v := new(_Body)
 	v._init("script")
 	return v
 }
 
-func (this *_Script) Src(v string) *_Script{
+func (this *_Script) Src(v string) *_Script {
 	this.attributes["src"] = v
 	return this
 }
 
-func (this *_Script) Type(v string) *_Script{
+func (this *_Script) Type(v string) *_Script {
 	this.attributes["type"] = v
 	return this
 }
 
-func (this *_Script) JS() *_Script{
+func (this *_Script) JS() *_Script {
 	this.attributes["type"] = "text/javascript"
 	return this
 }
@@ -227,33 +223,32 @@ type _Link struct {
 	_Element
 }
 
-func Link() *_Link{
+func Link() *_Link {
 	v := new(_Link)
 	v._init("link")
 	return v
 }
 
-func (this *_Link) Rel(v string) *_Link{
+func (this *_Link) Rel(v string) *_Link {
 	this.attributes["rel"] = v
 	return this
 }
 
-func (this *_Link) Href(n string, args ...interface{}) *_Link{
+func (this *_Link) Href(n string, args ...interface{}) *_Link {
 	this.attributes["href"] = fmt.Sprintf(n, args...)
 	return this
 }
 
-func (this *_Link) CSS() *_Link{
+func (this *_Link) CSS() *_Link {
 	this.attributes["type"] = "stylesheet"
 	return this
 }
-
 
 type _Div struct {
 	_Element
 }
 
-func Div() *_Div{
+func Div() *_Div {
 	v := new(_Div)
 	v._init("div")
 	return v
@@ -263,7 +258,7 @@ type _Span struct {
 	_Element
 }
 
-func Span() *_Span{
+func Span() *_Span {
 	v := new(_Span)
 	v._init("span")
 	return v
@@ -273,7 +268,7 @@ type _Hr struct {
 	_Element
 }
 
-func Hr() *_Hr{
+func Hr() *_Hr {
 	v := new(_Hr)
 	v._init("hr")
 	return v
@@ -283,7 +278,7 @@ type _Strong struct {
 	_Element
 }
 
-func Strong() *_Strong{
+func Strong() *_Strong {
 	v := new(_Strong)
 	v._init("strong")
 	return v
@@ -293,7 +288,7 @@ type _Input struct {
 	_Element
 }
 
-func Input() *_Input{
+func Input() *_Input {
 	v := new(_Input)
 	v._init("input")
 	v.attributes["type"] = "text"
@@ -309,7 +304,7 @@ type _TextArea struct {
 	_Element
 }
 
-func TextArea() *_TextArea{
+func TextArea() *_TextArea {
 	v := new(_TextArea)
 	v._init("textarea")
 	return v
@@ -326,11 +321,11 @@ func (this *_TextArea) Columns(i int) *_TextArea {
 }
 
 type _Option struct {
-	_Element	
+	_Element
 }
 
-func Option(val string, text string) *_Option{
-	v := new(_Option) 
+func Option(val string, text string) *_Option {
+	v := new(_Option)
 	v._init("option")
 	v.Val(val)
 	v.Text(text)
@@ -341,7 +336,7 @@ type _Select struct {
 	_Element
 }
 
-func Select() *_Select{
+func Select() *_Select {
 	v := new(_Select)
 	v._init("select")
 	return v
@@ -358,7 +353,7 @@ type _Li struct {
 	_Element
 }
 
-func Li() *_Li{
+func Li() *_Li {
 	v := new(_Li)
 	v._init("li")
 	return v
@@ -368,7 +363,7 @@ type _Ul struct {
 	_Element
 }
 
-func Ul() *_Ul{
+func Ul() *_Ul {
 	v := new(_Ul)
 	v._init("ul")
 	return v
@@ -379,7 +374,7 @@ type _Img struct {
 	//src string
 }
 
-func Img() *_Img{
+func Img() *_Img {
 	v := new(_Img)
 	v._init("img")
 	return v
@@ -394,7 +389,7 @@ type _A struct {
 	_Element
 }
 
-func A() *_A{
+func A() *_A {
 	v := new(_A)
 	v._init("a")
 	return v
@@ -409,9 +404,59 @@ type _P struct {
 	_Element
 }
 
-func P() *_P{
+func P() *_P {
 	v := new(_P)
 	v._init("p")
+	return v
+}
+
+type _H1 struct {
+	_Element
+}
+
+func H1() *_H1 {
+	v := new(_H1)
+	v._init("h1")
+	return v
+}
+
+type _H2 struct {
+	_Element
+}
+
+func H2() *_H2 {
+	v := new(_H2)
+	v._init("h2")
+	return v
+}
+
+type _H3 struct {
+	_Element
+}
+
+func H3() *_H3 {
+	v := new(_H3)
+	v._init("h3")
+	return v
+}
+
+type _H4 struct {
+	_Element
+}
+
+func H4() *_H4 {
+	v := new(_H4)
+	v._init("h4")
+	return v
+}
+
+type _H5 struct {
+	_Element
+}
+
+func H5() *_H5 {
+	v := new(_H5)
+	v._init("h5")
 	return v
 }
 
@@ -419,7 +464,7 @@ type _Button struct {
 	_Element
 }
 
-func Button() *_Button{
+func Button() *_Button {
 	v := new(_Button)
 	v._init("button")
 	v.attributes["type"] = "button"
@@ -430,7 +475,7 @@ type _Table struct {
 	_Element
 }
 
-func Table() *_Table{
+func Table() *_Table {
 	v := new(_Table)
 	v._init("table")
 	return v
@@ -440,7 +485,7 @@ type _THead struct {
 	_Element
 }
 
-func THead() *_THead{
+func THead() *_THead {
 	v := new(_THead)
 	v._init("thead")
 	return v
@@ -450,7 +495,7 @@ type _TBody struct {
 	_Element
 }
 
-func TBody() *_TBody{
+func TBody() *_TBody {
 	v := new(_TBody)
 	v._init("thead")
 	return v
@@ -460,7 +505,7 @@ type _TFoot struct {
 	_Element
 }
 
-func TFoot() *_TFoot{
+func TFoot() *_TFoot {
 	v := new(_TFoot)
 	v._init("tfoot")
 	return v
@@ -470,7 +515,7 @@ type _Tr struct {
 	_Element
 }
 
-func Tr() *_Tr{
+func Tr() *_Tr {
 	v := new(_Tr)
 	v._init("tr")
 	return v
@@ -480,7 +525,7 @@ type _Th struct {
 	_Element
 }
 
-func Th() *_Th{
+func Th() *_Th {
 	v := new(_Th)
 	v._init("td")
 	return v
@@ -490,7 +535,7 @@ type _Td struct {
 	_Element
 }
 
-func Td() *_Td{
+func Td() *_Td {
 	v := new(_Td)
 	v._init("td")
 	return v
