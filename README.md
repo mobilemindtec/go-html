@@ -2,7 +2,7 @@
 Go Lang HTML Fluent
 
 
-```
+```go
 
 h "github.com/mobilemindtec/go-html/html"
 
@@ -20,9 +20,9 @@ h "github.com/mobilemindtec/go-html/html"
     Styles("font-family:Tahoma,'Helvetica Neue',Helvetica,sans-serif;font-size: 15px;color:rgba(45, 110, 155, 1);").
     Text("Texto p").
     Child(h.A().
-  				  Href("https://www.mobilemind.com.br/file/%v", "12").
-  				  Text("Acesse para conferir")).
-  				  String()
+            Href("https://www.mobilemind.com.br/file/%v", "12").
+	    Text("Acesse para conferir")).
+	    String()
 
 
 ```
